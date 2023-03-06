@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <p>Tem certeza que deseja excluir {{ object }}?</p>
+        <a href="{% url 'projects' %}">Voltar</a>
+        <input type="submit" value="Confirmar">
+    </form>
+
+{% endblock content%}
