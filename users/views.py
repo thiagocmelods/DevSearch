@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate, logout
-from .models import Profile
+from .models import Profile, Skill
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CustomUserCreationForm, ProfileForm, SkillForm
+from .utils import searchProfiles, paginateProfiles
 
 
 def loginUser(request):
@@ -63,8 +64,11 @@ def registerUser(request):
 
 
 def profiles(request):
-    profiles = Profile.objects.all()
-    context = {'profiles': profiles}
+    
+    profiles, search_query = searchProfiles(request)
+    custom_range, profiles = paginateProfiles(request, profiles, 6)
+
+    context = {'profiles': profiles, 'search_query':search_query}
     return render(request, 'users/profiles.html', context)
 
 
